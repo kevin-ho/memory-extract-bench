@@ -1,0 +1,976 @@
+{
+  "dataset_version": "2.1.0",
+  "created": "2026-09-03",
+  "supersedes": "2.0.0",
+  "description": "Golden dataset for memory-extraction quality benchmarking. Transcripts mirror production pipeline shape (role/content turn pairs with event metadata); ground truth is by construction, scored deterministically. v2.1.0: graded core/details/metadata credit, expect_absent explicit-null checks, occurred-prefix lists, multi_chunk pipeline scenario. All names, hosts, and domains are placeholders.",
+  "conversation_context": "conversation between Alice (AI assistant) and Bob (user)",
+  "agent_identity": "alice",
+  "event_date_human": "Thursday, September 03, 2026",
+  "event_date_iso": "2026-09-03T12:00:00-07:00",
+  "platform": "tui",
+  "retain_mission": "This bank serves an AI personal assistant (Alice) that is a personal assistant, debugs infrastructure, deploys services, and manages homelab systems on the homeserver (home server) for a human owner (the human owner). Prioritize world facts: system state, configuration decisions, learnings, discoveries, and outcomes. When the speaker discovers or observes something about the world (software behavior, errors, fixes, architecture, hobbies, food, travel), tag it as fact_kind=world and fact_type=world — NOT as an assistant action. Only tag as fact_kind=assistant when the speaker themselves performed a deliberate action worth remembering. For the why field, explain why the fact MATTERS long-term, not why the speaker said it. STRICTLY consolidate: multiple observations about the same topic MUST become ONE fact, not separate entries.",
+  "scenarios": [
+    {
+      "id": "rich_transcript",
+      "description": "Workhorse v2: infra session with decisions, a backup with exact time+size+transport details, deployment facts, a standing rule, an alert fix, and a deadline RETRACTION (renewal moved 12th → 19th; old date may appear as context, new date is the core).",
+      "turns": [
+        [
+          "user",
+          "Bob: hey alice, did the backup to the backup VPS finish last night? i saw an alert at like 2am"
+        ],
+        [
+          "assistant",
+          "Alice: Yes — the nightly the homeserver backup completed at 02:14 and synced 1.2 TB to the the backup VPS VPS over WireGuard. The 2am alert was the Uptime Kuma heartbeat flapping while Borg was compacting; the job itself was green. I added a 30-minute grace window to that monitor so the flap stops paging you."
+        ],
+        [
+          "user",
+          "Bob: good. K2 bench runs on the 3080 tonight after my session, and remind me about the example.net renewal, it lapses on the 12th"
+        ],
+        [
+          "assistant",
+          "Alice: K2 3.7B bench queued on the gaming rig for tonight after your session, results to the wiki. Calendar reminder set for the example.net renewal before September 12."
+        ],
+        [
+          "user",
+          "Bob: update on that — the renewal date moved, registrar says the 19th now, not the 12th"
+        ],
+        [
+          "assistant",
+          "Alice: Updated: example.net renewal deadline is now September 19, moved from the 12th. I've shifted the reminder and the three-days-ahead ping accordingly."
+        ],
+        [
+          "user",
+          "Bob: last thing, write it down again: cost estimates go to my personal email only, never the client one. that slipped in the relay thread"
+        ],
+        [
+          "assistant",
+          "Alice: Written down as a hard rule: cost estimates to your personal address only, never the client email. Flagged in the runbook so every future draft checks the recipient first."
+        ]
+      ],
+      "expected": [
+        {
+          "id": "backup_completed",
+          "core": [
+            [
+              "backup"
+            ],
+            [
+              "the backup VPS"
+            ]
+          ],
+          "details": [
+            [
+              "1.2 TB",
+              "1.2tb",
+              "1.2 tb",
+              "1.2 tera"
+            ],
+            [
+              "02:14",
+              "2:14",
+              "2:14am",
+              "2:14 am"
+            ],
+            [
+              "WireGuard",
+              "wireguard"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        },
+        {
+          "id": "kuma_alert_fix",
+          "core": [
+            [
+              "Uptime Kuma",
+              "kuma"
+            ]
+          ],
+          "details": [
+            [
+              "grace",
+              "grace window",
+              "30-minute",
+              "30 minute"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world"
+          }
+        },
+        {
+          "id": "k2_bench_tonight",
+          "core": [
+            [
+              "3.7B",
+              "3.7"
+            ]
+          ],
+          "details": [
+            [
+              "the gaming rig",
+              "the gaming rig",
+              "3080"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        },
+        {
+          "id": "domain_renewal",
+          "core": [
+            [
+              "September 19",
+              "sept 19",
+              "sep 19",
+              "2026-09-19",
+              "the 19th"
+            ]
+          ],
+          "details": [
+            [
+              "the 12th",
+              "september 12",
+              "sept 12",
+              "the 12th",
+              "2026-09-12"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        },
+        {
+          "id": "cost_email_rule",
+          "core": [
+            [
+              "estimate"
+            ],
+            [
+              "personal"
+            ]
+          ],
+          "details": [
+            [
+              "client"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world",
+            "fact_kind": "conversation"
+          }
+        }
+      ],
+      "checks": {
+        "max_facts": 5,
+        "note": "Consolidation may merge K2 bench + renewal into fewer facts; item matching is per-fact so merged facts still score."
+      }
+    },
+    {
+      "id": "noise_only",
+      "description": "Pure filler v2: greetings, body complaints, mic tests, stream-of-consciousness. Correct output is ZERO facts. Harder bait than v1 (physical complaints, mic checks) but still unambiguously transient.",
+      "turns": [
+        [
+          "user",
+          "Bob: morning alice"
+        ],
+        [
+          "assistant",
+          "Alice: Morning, Bob. Coffee first or fires first?"
+        ],
+        [
+          "user",
+          "Bob: coffee first. ugh my back is killing me from sitting, gotta fix my chair height or something"
+        ],
+        [
+          "assistant",
+          "Alice: Noted on the back — stand and stretch between fires, Bob."
+        ],
+        [
+          "user",
+          "Bob: anyway just testing the mic on the new headset, one two, check check, sounds fine"
+        ],
+        [
+          "assistant",
+          "Alice: Levels read clean on my side too."
+        ],
+        [
+          "user",
+          "Bob: lol ok anyway anyway, talk later"
+        ],
+        [
+          "assistant",
+          "Alice: Later, Bob."
+        ]
+      ],
+      "expected": [],
+      "checks": {
+        "max_facts": 0,
+        "note": "Any emitted fact is junk. Physical complaints and mic tests are bait but transient — the retain mission skips process chatter."
+      }
+    },
+    {
+      "id": "consolidation_heavy",
+      "description": "TWO threads, each repeated three times (E4B quant incident; Denver flight details). Rules demand ONE fact per thread = 2 facts total, with detail strings spread across mentions.",
+      "turns": [
+        [
+          "user",
+          "Bob: the e4b qat quant produced malformed retain json again today, twice now"
+        ],
+        [
+          "assistant",
+          "Alice: Logged — two malformed-JSON retains from the E4B QAT quant today. Watching for a third before calling it a pattern."
+        ],
+        [
+          "user",
+          "Bob: and we're flying into denver for launch week, booked that this morning"
+        ],
+        [
+          "assistant",
+          "Alice: Denver flights booked for launch week. Noted."
+        ],
+        [
+          "user",
+          "Bob: third malformed json just now, on the marinara game state"
+        ],
+        [
+          "assistant",
+          "Alice: Three episodes now — that's a pattern. E4B QAT quant is dropping malformed JSON across retain and Marinara. Recommend a restart plus dropping temp from 1.0 to 0.7."
+        ],
+        [
+          "user",
+          "Bob: the denver return leg is the red-eye btw"
+        ],
+        [
+          "assistant",
+          "Alice: Noted — Denver return is the red-eye."
+        ],
+        [
+          "user",
+          "Bob: restarted the server and dropped the temp like you said, e4b looks stable"
+        ],
+        [
+          "assistant",
+          "Alice: Confirmed stable after restart + temp 0.7. Recap: three malformed-JSON episodes across retain and Marinara today, resolved by restart plus temperature drop; monitoring for recurrence."
+        ],
+        [
+          "user",
+          "Bob: cool. denver stuff is all set then"
+        ],
+        [
+          "assistant",
+          "Alice: Denver is set: flights booked this morning for launch week, returning on the red-eye."
+        ]
+      ],
+      "expected": [
+        {
+          "id": "e4b_quant_incident",
+          "core": [
+            [
+              "E4B",
+              "e4b"
+            ],
+            [
+              "malformed"
+            ]
+          ],
+          "details": [
+            [
+              "restart",
+              "restarted",
+              "restart"
+            ],
+            [
+              "temp",
+              "temperature",
+              "0.7",
+              "1.0"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        },
+        {
+          "id": "denver_trip",
+          "core": [
+            [
+              "Denver",
+              "denver"
+            ]
+          ],
+          "details": [
+            [
+              "launch week",
+              "launch week"
+            ],
+            [
+              "red-eye",
+              "red-eye",
+              "red eye"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world"
+          }
+        }
+      ],
+      "checks": {
+        "max_facts": 2,
+        "note": "Exactly one consolidated fact per thread. Fragments are punished by precision (yield/emitted) and by the max_facts cap."
+      }
+    },
+    {
+      "id": "temporal",
+      "description": "Temporal v2 with traps: 'yesterday' → Sep 2, the mechanic MOVED from the 11th to the 18th (new date is core, old date is bonus detail), 'this coming monday' → Sep 7, 'since june'. Events must carry resolved occurred_start ISO dates.",
+      "turns": [
+        [
+          "user",
+          "Bob: the pihole dns thing from yesterday took me three hours, turned out to be the conditional forwarding loop"
+        ],
+        [
+          "assistant",
+          "Alice: Logged: yesterday, September 2, the Pi-hole conditional-forwarding loop cost three hours; fix documented in the network runbook."
+        ],
+        [
+          "user",
+          "Bob: the launch prep review is this coming monday, block it"
+        ],
+        [
+          "assistant",
+          "Alice: Blocked: launch prep review on Monday, September 7."
+        ],
+        [
+          "user",
+          "Bob: the mechanic friday week for the brake inspection"
+        ],
+        [
+          "assistant",
+          "Alice: The mechanic appointment for the brake inspection on Friday, September 11 — calendar set with a day-before reminder."
+        ],
+        [
+          "user",
+          "Bob: update, they moved the the mechanic to the 18th instead of the 11th"
+        ],
+        [
+          "assistant",
+          "Alice: Updated: the mechanic moved to Friday, September 18 (was the 11th). Reminder shifted."
+        ],
+        [
+          "user",
+          "Bob: and remember ive been off caffeine since june, relevant for the sleep stuff"
+        ],
+        [
+          "assistant",
+          "Alice: Noted: off caffeine since June 2026 — saved as relevant context for the sleep discussion."
+        ]
+      ],
+      "expected": [
+        {
+          "id": "pihole_loop",
+          "core": [
+            [
+              "September 2",
+              "sep 2",
+              "sept 2",
+              "2026-09-02"
+            ]
+          ],
+          "details": [
+            [
+              "conditional forwarding",
+              "conditional forwarding",
+              "forwarding loop",
+              "conditional-forwarding"
+            ],
+            [
+              "three hours",
+              "3 hours",
+              "three hours"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world",
+            "fact_kind": "event",
+            "occurred": "2026-09-02"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        },
+        {
+          "id": "launch_review",
+          "core": [
+            [
+              "September 7",
+              "sep 7",
+              "sept 7",
+              "2026-09-07",
+              "monday"
+            ]
+          ],
+          "details": [
+            [
+              "launch",
+              "launch prep",
+              "launch"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world",
+            "fact_kind": "event",
+            "occurred": "2026-09-07"
+          }
+        },
+        {
+          "id": "the mechanic_moved",
+          "core": [
+            [
+              "the 18th",
+              "september 18",
+              "sep 18",
+              "sept 18",
+              "2026-09-18"
+            ]
+          ],
+          "details": [
+            [
+              "the 11th",
+              "september 11",
+              "sep 11",
+              "sept 11",
+              "the 11th",
+              "2026-09-11"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world",
+            "fact_kind": "event",
+            "occurred": "2026-09-18"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        },
+        {
+          "id": "meds_since_june",
+          "core": [
+            [
+              "June",
+              "june"
+            ]
+          ],
+          "details": [
+            [
+              "sleep",
+              "sleep",
+              "caffeine"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world"
+          }
+        }
+      ],
+      "checks": {
+        "max_facts": 4,
+        "note": "Unresolved relative dates in event facts trip the banned-pattern check ('yesterday' etc). Moved-appointment: emitting BOTH dates as separate facts = fragmentation penalty."
+      }
+    },
+    {
+      "id": "no_repeats",
+      "description": "Five distinct single-mention facts with numeric precision traps (60/40 not 40/60; 21st vs 14th; Nov 6). Pure recall + detail retention.",
+      "turns": [
+        [
+          "user",
+          "Bob: four things, fast. one, the homelab got a new ups, a cyberpower cp1500, swapped in this morning"
+        ],
+        [
+          "assistant",
+          "Alice: Logged: CyberPower CP1500 UPS installed in the homelab this morning."
+        ],
+        [
+          "user",
+          "Bob: two, halloween party is booked for october 31 at Margot's place again"
+        ],
+        [
+          "assistant",
+          "Alice: Halloween party: October 31, at Margot's place, same as last year."
+        ],
+        [
+          "user",
+          "Bob: three, finished rebalancing the portfolio, went 60/40 stocks bonds, was 70/30"
+        ],
+        [
+          "assistant",
+          "Alice: Portfolio rebalanced to 60/40 stocks/bonds from 70/30."
+        ],
+        [
+          "user",
+          "Bob: four, my sister's birthday is the 21st, get the gift shipped by the 14th"
+        ],
+        [
+          "assistant",
+          "Alice: Sister's birthday on the 21st; gift must ship by the 14th. Reminder set."
+        ],
+        [
+          "user",
+          "Bob: oh and five, austin flights are booked for november 6"
+        ],
+        [
+          "assistant",
+          "Alice: Austin flights booked for November 6. All five logged."
+        ]
+      ],
+      "expected": [
+        {
+          "id": "ups",
+          "core": [
+            [
+              "CyberPower",
+              "cyberpower"
+            ],
+            [
+              "CP1500",
+              "cp1500"
+            ]
+          ],
+          "details": [],
+          "metadata": {
+            "fact_type": "world"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        },
+        {
+          "id": "halloween",
+          "core": [
+            [
+              "October 31",
+              "oct 31",
+              "2026-10-31",
+              "halloween"
+            ]
+          ],
+          "details": [
+            [
+              "Margot",
+              "Margot"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world",
+            "fact_kind": "event",
+            "occurred": "2026-10-31"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        },
+        {
+          "id": "portfolio",
+          "core": [
+            [
+              "60/40",
+              "60 / 40",
+              "60-40"
+            ]
+          ],
+          "details": [
+            [
+              "70/30",
+              "70 / 30",
+              "70-30"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        },
+        {
+          "id": "sister_bday",
+          "core": [
+            [
+              "21st",
+              "21st",
+              "september 21",
+              "2026-09-21"
+            ]
+          ],
+          "details": [
+            [
+              "14th",
+              "by the 14th",
+              "september 14",
+              "the 14th"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world"
+          }
+        },
+        {
+          "id": "austin_flights",
+          "core": [
+            [
+              "Austin",
+              "austin"
+            ]
+          ],
+          "details": [
+            [
+              "November 6",
+              "nov 6",
+              "2026-11-06",
+              "the 6th"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world",
+            "fact_kind": "event",
+            "occurred": "2026-11-06"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        }
+      ],
+      "checks": {
+        "max_facts": 5,
+        "note": "Five distinct topics — no consolidation possible. Numeric strings are direction-sensitive: '40/60' does not match '60/40'."
+      }
+    },
+    {
+      "id": "entity_naming",
+      "description": "Rule 8 naming (Alice/Bob, never 'the assistant/user'), fact_type=assistant for Alice's own actions with occurred dates, and the prompt's own COREFERENCE example: 'my roommate — emily —' + cat name must resolve to Emily in the fact.",
+      "turns": [
+        [
+          "user",
+          "Bob: did you end up fixing the relay dev server like you said this morning?"
+        ],
+        [
+          "assistant",
+          "Alice: Yes — I rebuilt the Relay dev server on port 5173 this morning and verified the hot-reload loop end to end. It had been crash-looping since your last npm update."
+        ],
+        [
+          "user",
+          "Bob: thank god. and the wiki page for it?"
+        ],
+        [
+          "assistant",
+          "Alice: I also updated the Relay wiki page with the new port and the crash-loop fix notes."
+        ],
+        [
+          "user",
+          "Bob: unrelated, my roommate — emily — is watching my place next week while im in austin. her cat is called miso"
+        ],
+        [
+          "assistant",
+          "Alice: Noted: Emily (your roommate) is house-sitting next week while you're in Austin, and her cat is called Miso."
+        ]
+      ],
+      "expected": [
+        {
+          "id": "relay_rebuild",
+          "core": [
+            [
+              "Alice",
+              "alice"
+            ],
+            [
+              "Relay",
+              "relay"
+            ]
+          ],
+          "details": [
+            [
+              "5173",
+              "5173"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "assistant",
+            "fact_kind": "event",
+            "occurred": "2026-09-03"
+          }
+        },
+        {
+          "id": "relay_wiki",
+          "core": [
+            [
+              "Alice",
+              "alice"
+            ],
+            [
+              "wiki",
+              "wiki"
+            ]
+          ],
+          "details": [
+            [
+              "Relay",
+              "relay"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "assistant",
+            "fact_kind": "event",
+            "occurred": "2026-09-03"
+          }
+        },
+        {
+          "id": "emily_catsitting",
+          "core": [
+            [
+              "Emily",
+              "emily"
+            ]
+          ],
+          "details": [
+            [
+              "Miso",
+              "miso"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world"
+          }
+        }
+      ],
+      "checks": {
+        "max_facts": 3,
+        "note": "'The assistant/the user/the AI' in what/who fields trips the banned pattern. Coreference: fact should name Emily, not 'my roommate' unlinked."
+      }
+    },
+    {
+      "id": "retraction_update",
+      "description": "NEW: corrections and cancellations. Launch moved 15th → 22nd (new date core, old date context-detail); webcam return SCRATCHED (keeping the Logitech). Stale versions emitted as standalone facts are fragmentation/junk. Tests belief-update discipline.",
+      "turns": [
+        [
+          "user",
+          "Bob: the relay launch is set for september 15"
+        ],
+        [
+          "assistant",
+          "Alice: Logged: Relay launch set for September 15."
+        ],
+        [
+          "user",
+          "Bob: wait, update — launch moved to september 22, the 15th is dead"
+        ],
+        [
+          "assistant",
+          "Alice: Updated: Relay launch is now September 22 (was the 15th). Calendar shifted."
+        ],
+        [
+          "user",
+          "Bob: also im returning the logitech webcam, got the insta360 coming"
+        ],
+        [
+          "assistant",
+          "Alice: Noted: returning the Logitech webcam, Insta360 on the way."
+        ],
+        [
+          "user",
+          "Bob: scratch that, the logitech arrived and it's actually fine, keeping it, insta360 cancelled"
+        ],
+        [
+          "assistant",
+          "Alice: Reversed: keeping the Logitech webcam, Insta360 cancelled. Current state: Logitech stays."
+        ]
+      ],
+      "expected": [
+        {
+          "id": "launch_date",
+          "core": [
+            [
+              "September 22",
+              "sept 22",
+              "sep 22",
+              "2026-09-22",
+              "the 22nd"
+            ]
+          ],
+          "details": [
+            [
+              "the 15th",
+              "september 15",
+              "sep 15",
+              "the 15th",
+              "2026-09-15"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world",
+            "fact_kind": "event",
+            "occurred": "2026-09-22"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        },
+        {
+          "id": "webcam_kept",
+          "core": [
+            [
+              "Logitech",
+              "logitech"
+            ]
+          ],
+          "details": [
+            [
+              "keep",
+              "keeping",
+              "keeping it",
+              "stays",
+              "staying"
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world",
+            "fact_kind": "conversation"
+          }
+        }
+      ],
+      "checks": {
+        "max_facts": 2,
+        "note": "The stale 'returning webcam' or 'launch on the 15th' emitted as separate facts = over-extraction. Cancelling the Insta360 is context, not a required fact."
+      }
+    },
+    {
+      "id": "multi_chunk",
+      "description": "NEW v2.1: facts spread across three separate chunks (production extracts each chunk independently then merges). Tests cross-chunk consolidation, no duplication, and late-arriving corrections.",
+      "turns": [],
+      "chunks": [
+        [
+          [
+            "user",
+            "Bob: the backup system is getting an upgrade next week, moving from borg to restic"
+          ],
+          [
+            "assistant",
+            "Alice: Logged: backup migration from Borg to Restic planned for next week."
+          ]
+        ],
+        [
+          [
+            "user",
+            "Bob: update on the backup thing, the restic migration is done, finished this morning"
+          ],
+          [
+            "assistant",
+            "Alice: Confirmed: backup migration to Restic completed this morning."
+          ]
+        ],
+        [
+          [
+            "user",
+            "Bob: oh and the restic repo is on the new nas, 8tb, not the backup VPS anymore"
+          ],
+          [
+            "assistant",
+            "Alice: Noted: Restic repository now lives on the new 8TB NAS, no longer the backup VPS."
+          ]
+        ]
+      ],
+      "expected": [
+        {
+          "id": "backup_migration",
+          "core": [
+            [
+              "restic"
+            ]
+          ],
+          "details": [
+            [
+              "borg",
+              [
+                "borg"
+              ]
+            ],
+            [
+              "8tb",
+              [
+                "8 tb",
+                "8tb",
+                "nas"
+              ]
+            ]
+          ],
+          "metadata": {
+            "fact_type": "world"
+          },
+          "expect_absent": [
+            "who"
+          ]
+        },
+        {
+          "id": "backup_target_change",
+          "core": [
+            [
+              "NAS",
+              [
+                "nas"
+              ]
+            ],
+            [
+              "the backup VPS",
+              [
+                "the backup VPS"
+              ]
+            ]
+          ],
+          "details": [],
+          "metadata": {
+            "fact_type": "world"
+          },
+          "expect_absent": [
+            "where"
+          ]
+        }
+      ],
+      "checks": {
+        "max_facts": 3,
+        "note": "Merged-pipeline scoring: one consolidated backup fact expected (migration done + target change may merge or split). Cross-chunk duplication (same fact twice) is punished by yield. 'Not the backup VPS anymore' must NOT produce a stale 'backups go to the backup VPS' fact."
+      }
+    }
+  ],
+  "banned_output_patterns": [
+    {
+      "pattern": "\\bthe (AI|assistant|user|speaker)\\b",
+      "ignore_case": true,
+      "applies_to": "what+who",
+      "note": "Rule 8: entity naming"
+    },
+    {
+      "pattern": "\\b(yesterday|today|tonight|this morning|last night|next friday|coming monday)\\b",
+      "ignore_case": true,
+      "applies_to": "what",
+      "scenarios": [
+        "temporal",
+        "rich_transcript",
+        "entity_naming"
+      ],
+      "note": "Temporal rule: relative expressions must resolve to absolute dates in event facts. Restricted to scenarios with dated events."
+    }
+  ]
+}

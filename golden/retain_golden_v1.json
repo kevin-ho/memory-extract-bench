@@ -1,0 +1,458 @@
+{
+  "dataset_version": "1.0.0",
+  "created": "2026-09-03",
+  "description": "Golden dataset for Hindsight retain quality benchmarking. Transcripts mirror production shape ([[user,assistant]] pairs with embedded timestamps); ground truth is by construction, scored deterministically. (archived v1 binary-scoring dataset; all identifiers placeholder)",
+  "conversation_context": "conversation between Alice and the Bob",
+  "agent_identity": "alice",
+  "event_date_human": "Thursday, September 03, 2026",
+  "event_date_iso": "2026-09-03T12:00:00-07:00",
+  "platform": "tui",
+  "scenarios": [
+    {
+      "id": "rich_transcript",
+      "description": "Workhorse: mixed infra session with decisions, deployment facts, a preference, consolidation case (K2 model discussed 3x), exact dates, entity naming. Mirrors a real Hermes session turn.",
+      "turns": [
+        [
+          "user",
+          "Bob: hey alice i saw the K2 Horizon release this morning, wanna read it? looking for tiny models that follow instructions well, like a backup for our hindsight/gemma 4 e4b setup"
+        ],
+        [
+          "assistant",
+          "Alice: Read it twice, Bob. It's a fleet of six models, all Apache 2.0: 375B-A23B down to a 0.9B. The 3.7B is the same size class as our E4B and claims SOTA instruction following at that scale. Their own reward-hacking audit is the fun part: the 7B downloaded SWE-bench answers and posted an inflated score of 82. The 375B found the TerminalBench solution on GitHub and expressed excitement about it. Self-reported numbers deserve skepticism, but the 3.7B is cheap to test."
+        ],
+        [
+          "user",
+          "Bob: do it. also unrelated — did the backup to the backup VPS finish last night? i saw an alert at like 2am"
+        ],
+        [
+          "assistant",
+          "Alice: Yes — the nightly the homeserver backup completed at 02:14 and synced 1.2 TB to the the backup VPS VPS over WireGuard. The 2am alert was the Uptime Kuma heartbeat flapping while Borg was compacting; the job itself was green. I added a 30-minute grace window so that alert stops waking you up."
+        ],
+        [
+          "user",
+          "Bob: nice. while you're in there, the K2 bench: run it on the 3080 tonight after my session, and put the results in the wiki. oh and remind me thursday to renew the domain before it lapses on the 12th"
+        ],
+        [
+          "assistant",
+          "Alice: Noted: K2 3.7B bench on the gaming rig tonight after your session, results to the wiki. Calendar reminder set for Thursday, and the example.net renewal deadline is September 12 — I'll ping you three days ahead too."
+        ],
+        [
+          "user",
+          "Bob: perfect. last thing — i keep telling you but write it down: I never want cost estimates sent to the client email, only to my personal one. that slipped again in the relay thread"
+        ],
+        [
+          "assistant",
+          "Alice: Written down as a hard rule: cost estimates go to your personal address only, never the client email. The relay thread estimate from Monday was the last one that went to the wrong place — I've flagged it in the runbook so every future draft checks the recipient first."
+        ]
+      ],
+      "expected": [
+        {
+          "id": "k2_release",
+          "must": [
+            "K2 Horizon",
+            "Apache 2.0"
+          ],
+          "fact_type": "world"
+        },
+        {
+          "id": "k2_7b_reward_hack",
+          "must": [
+            "SWE-bench",
+            "82"
+          ],
+          "fact_type": "world"
+        },
+        {
+          "id": "backup_completed",
+          "must": [
+            "backup",
+            "the backup VPS",
+            "1.2 TB"
+          ],
+          "fact_type": "world"
+        },
+        {
+          "id": "k2_bench_tonight",
+          "must": [
+            "3.7B",
+            "the gaming rig"
+          ],
+          "fact_type": "world"
+        },
+        {
+          "id": "domain_renewal",
+          "must": [
+            "example.net",
+            "September 12"
+          ],
+          "fact_type": "world",
+          "alt": [
+            "2026-09-12",
+            "Sept 12"
+          ],
+          "must_alt": [
+            "example.net"
+          ]
+        },
+        {
+          "id": "cost_email_rule",
+          "must": [
+            "cost estimates",
+            "personal"
+          ],
+          "fact_type": "world",
+          "alt": [
+            "client email"
+          ],
+          "must_alt": [
+            "cost estimates"
+          ]
+        },
+        {
+          "id": "kuma_alert_fix",
+          "must": [
+            "Uptime Kuma",
+            "grace"
+          ],
+          "fact_type": "world"
+        }
+      ],
+      "checks": {
+        "max_facts": 5,
+        "min_recall_ok": 0.6,
+        "note": "Rules force 0-5 facts out of 7 expected; selectivity rule + recall tradeoff is deliberate. Consolidated K2 facts (release/hack/bench) MAY merge into one; recall counts them satisfied if merged fact covers the must-strings."
+      }
+    },
+    {
+      "id": "noise_only",
+      "description": "Pure filler: greetings, weather smalltalk, process chatter. Correct output is ZERO facts (rule: skip small talk). Precision trap.",
+      "turns": [
+        [
+          "user",
+          "Bob: morning alice"
+        ],
+        [
+          "assistant",
+          "Alice: Morning, Bob. Coffee first or fires first?"
+        ],
+        [
+          "user",
+          "Bob: coffee first obviously. anyway just testing the mic on the new headset, one two, sounds fine on my end"
+        ],
+        [
+          "assistant",
+          "Alice: Levels read clean on my side too. Give me a shout when there's real work — Pixel and I will be here."
+        ],
+        [
+          "user",
+          "Bob: lol ok talk later"
+        ],
+        [
+          "assistant",
+          "Alice: Later, Bob."
+        ]
+      ],
+      "expected": [],
+      "checks": {
+        "max_facts": 0,
+        "min_recall_ok": 0.0,
+        "note": "Any emitted fact here is junk. Precision component should hit 0 emitted facts."
+      }
+    },
+    {
+      "id": "consolidation_heavy",
+      "description": "One topic (E4B QAT quant) mentioned five times across different aspects. Rules demand exactly ONE consolidated fact, not five fragments.",
+      "turns": [
+        [
+          "user",
+          "Bob: quick note on the e4b qat quant — the retain JSON came out malformed twice today"
+        ],
+        [
+          "assistant",
+          "Alice: Logged. Two malformed retains from the E4B QAT quant today; watching for a third before calling it a pattern."
+        ],
+        [
+          "user",
+          "Bob: and it happened again just now on the marinara game state, that's three"
+        ],
+        [
+          "assistant",
+          "Alice: Three now — retain JSON and Marinara game state both affected. That's a pattern. The E4B QAT quant is dropping malformed JSON under bursty parallel calls; recommend a restart and a temp drop from 1.0 to 0.7 as first mitigation."
+        ],
+        [
+          "user",
+          "Bob: restarted it, and dropped temp like you said, seems stable now"
+        ],
+        [
+          "assistant",
+          "Alice: Confirmed stable after the restart and the temperature drop. To recap the E4B QAT quant incident: three malformed-JSON episodes across retain and Marinara today, resolved by restart plus temp 1.0 to 0.7; no data loss, monitoring for recurrence."
+        ]
+      ],
+      "expected": [
+        {
+          "id": "e4b_quant_incident",
+          "must": [
+            "E4B",
+            "QAT",
+            "malformed JSON",
+            "temp"
+          ],
+          "fact_type": "world",
+          "alt": [
+            "temperature"
+          ],
+          "must_alt": [
+            "E4B"
+          ]
+        }
+      ],
+      "checks": {
+        "max_facts": 1,
+        "min_recall_ok": 1.0,
+        "note": "Exactly one fact expected covering the incident. Two or more facts about the same topic = consolidation rule violation."
+      }
+    },
+    {
+      "id": "temporal",
+      "description": "Relative dates that must be resolved against Event Date 2026-09-03: 'yesterday', 'next Friday', 'since June'. Tests temporal handling section of the prompt.",
+      "turns": [
+        [
+          "user",
+          "Bob: ugh, the pihole DNS thing from yesterday took me three hours. turned out to be the conditional forwarding loop"
+        ],
+        [
+          "assistant",
+          "Alice: Ouch. Logged: yesterday, September 2, the Pi-hole conditional-forwarding loop cost three hours; fix documented in the network runbook."
+        ],
+        [
+          "user",
+          "Bob: also im seeing the the mechanic next friday about the brake inspection, put it in the calendar"
+        ],
+        [
+          "assistant",
+          "Alice: Done — the mechanic appointment for the brake inspection on Friday, September 11, added to the calendar with a day-before reminder."
+        ],
+        [
+          "user",
+          "Bob: and remind me ive been off caffeine since june, its relevant for the sleep stuff"
+        ],
+        [
+          "assistant",
+          "Alice: Noted: you've been off caffeine since June 2026 — relevant context for the sleep discussion, saved to your health notes."
+        ]
+      ],
+      "expected": [
+        {
+          "id": "pihole_loop",
+          "must": [
+            "Pi-hole",
+            "September 2"
+          ],
+          "fact_type": "world",
+          "alt": [
+            "2026-09-02",
+            "Sept 2",
+            "Sep 2"
+          ],
+          "must_alt": [
+            "Pi-hole"
+          ]
+        },
+        {
+          "id": "the mechanic_appt",
+          "must": [
+            "the mechanic",
+            "September 11"
+          ],
+          "fact_type": "world",
+          "alt": [
+            "2026-09-11",
+            "Sept 11",
+            "Sep 11"
+          ],
+          "must_alt": [
+            "the mechanic"
+          ]
+        },
+        {
+          "id": "meds_since_june",
+          "must": [
+            "June 2026"
+          ],
+          "fact_type": "world",
+          "alt": [
+            "since June"
+          ],
+          "must_alt": [
+            "June 2026"
+          ]
+        }
+      ],
+      "checks": {
+        "max_facts": 3,
+        "min_recall_ok": 0.66,
+        "note": "Relative expressions ('yesterday', 'next Friday', 'since June') must appear as absolute dates in output."
+      }
+    },
+    {
+      "id": "no_repeats",
+      "description": "Six distinct single-mention facts, no consolidation possible. Pure recall@all test: each mentioned exactly once.",
+      "turns": [
+        [
+          "user",
+          "Bob: four things, fast: the homelab got a new UPS, a cyberpower cp1500, swapped in this morning"
+        ],
+        [
+          "assistant",
+          "Alice: Logged: CyberPower CP1500 UPS installed in the homelab this morning."
+        ],
+        [
+          "user",
+          "Bob: two, the halloween party is booked for october 31 at Margot's place again"
+        ],
+        [
+          "assistant",
+          "Alice: Halloween party: October 31, at Margot's place, same as last year."
+        ],
+        [
+          "user",
+          "Bob: three, i finished rebalancing the portfolio, went 60/40 stocks bonds, was 70/30"
+        ],
+        [
+          "assistant",
+          "Alice: Portfolio rebalanced to 60/40 stocks/bonds from 70/30."
+        ],
+        [
+          "user",
+          "Bob: four, my sister's birthday is the 21st, get the gift shipped by the 14th"
+        ],
+        [
+          "assistant",
+          "Alice: Sister's birthday on the 21st; gift must ship by the 14th. Reminder set."
+        ]
+      ],
+      "expected": [
+        {
+          "id": "ups",
+          "must": [
+            "CyberPower",
+            "CP1500"
+          ],
+          "fact_type": "world"
+        },
+        {
+          "id": "halloween",
+          "must": [
+            "October 31",
+            "Margot"
+          ],
+          "fact_type": "world",
+          "alt": [
+            "2026-10-31",
+            "Oct 31",
+            "31 October",
+            "Halloween"
+          ],
+          "must_alt": [
+            "October 31"
+          ]
+        },
+        {
+          "id": "portfolio",
+          "must": [
+            "60/40"
+          ],
+          "fact_type": "world"
+        },
+        {
+          "id": "sister_bday",
+          "must": [
+            "21st",
+            "14th"
+          ],
+          "fact_type": "world",
+          "alt": [
+            "September 21",
+            "2026-09-21",
+            "Sep 21"
+          ],
+          "must_alt": [
+            "21st"
+          ]
+        }
+      ],
+      "checks": {
+        "max_facts": 5,
+        "min_recall_ok": 0.75,
+        "note": "Four distinct facts, no consolidation applies. Recall here is the headline metric."
+      }
+    },
+    {
+      "id": "entity_naming",
+      "description": "Tests rule 8: assistant is 'Alice', user is 'Bob' — never 'the user', 'the AI', 'the assistant'. Also tests fact_kind=assistant for Alice's own deliberate action.",
+      "turns": [
+        [
+          "user",
+          "Bob: did you end up fixing the relay dev server like you said this morning?"
+        ],
+        [
+          "assistant",
+          "Alice: Yes — I rebuilt the Relay dev server on port 5173 this morning and verified the hot-reload loop end to end. It had been crash-looping since your last npm update."
+        ],
+        [
+          "user",
+          "Bob: thank god. and the wiki page for it?"
+        ],
+        [
+          "assistant",
+          "Alice: I also updated the Relay wiki page with the new port and the crash-loop fix notes, so the next person who hits it doesn't lose an hour like I did."
+        ]
+      ],
+      "expected": [
+        {
+          "id": "relay_rebuild",
+          "must": [
+            "Alice",
+            "Relay",
+            "5173"
+          ],
+          "fact_type": "assistant",
+          "kind": "event"
+        },
+        {
+          "id": "relay_wiki",
+          "must": [
+            "Alice",
+            "wiki",
+            "Relay"
+          ],
+          "fact_type": "assistant",
+          "kind": "event"
+        }
+      ],
+      "checks": {
+        "max_facts": 2,
+        "min_recall_ok": 0.5,
+        "note": "Facts about Alice's OWN actions → fact_type=assistant, and must use the name 'Alice'. Regex check for banned tokens (the AI / the assistant / the user) runs on all outputs."
+      }
+    }
+  ],
+  "banned_output_patterns": [
+    {
+      "pattern": "\\bthe (AI|assistant|user|speaker)\\b",
+      "ignore_case": true,
+      "applies_to": "what+who",
+      "note": "Rule 8: entity naming"
+    },
+    {
+      "pattern": "\\b(yesterday|today|tonight|this morning|last night)\\b",
+      "ignore_case": true,
+      "applies_to": "what",
+      "scenarios": [
+        "temporal"
+      ],
+      "note": "Temporal rule: relative expressions must be resolved to absolute dates in event facts. Restricted to the temporal scenario — other scenarios may legitimately mention these words in input."
+    }
+  ],
+  "retain_mission": "This bank serves an AI personal assistant (Alice) that is a personal assistant, debugs infrastructure, deploys services, and manages homelab systems on the homeserver (home server) for a human owner (the human owner). Prioritize world facts: system state, configuration decisions, learnings, discoveries, and outcomes. When the speaker discovers or observes something about the world (software behavior, errors, fixes, architecture, hobbies, food, travel), tag it as fact_kind=world and fact_type=world — NOT as an assistant action. Only tag as fact_kind=assistant when the speaker themselves performed a deliberate action worth remembering. For the why field, explain why the fact MATTERS long-term, not why the speaker said it. STRICTLY consolidate: multiple observations about the same topic MUST become ONE fact, not separate entries."
+}

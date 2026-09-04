@@ -1,0 +1,142 @@
+{
+ "fingerprint": {
+  "model": "gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf",
+  "host": "127.0.0.1:8091",
+  "gguf": null,
+  "temperature": 0.1,
+  "max_tokens": 8192,
+  "runs": 3,
+  "dataset_version": "2.1.0",
+  "bench_version": "2.0.0",
+  "system_prompt_sha256": "4f0977a195f104f19e4d99f9f958ff47fd0a295ecf8df4109328e2ca1b2b3bdd",
+  "schema_sha256": "94f80c9b6d6961a03648bb0e700b28cd76db3fb3a5ae86ee6d81cfd049e30dc1",
+  "response_format": "json_schema (grammar-enforced)",
+  "api_key_used": false,
+  "thinking_off_kwargs": false,
+  "date": "2026-09-04 15:18"
+ },
+ "composite": {
+  "recall": 0.8438,
+  "yield": 0.6977,
+  "discipline": 0.6667,
+  "consistency": 0.9774,
+  "score": 79.41
+ },
+ "scenarios": {
+  "rich_transcript": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.7833,
+   "recall_runs": [
+    0.7,
+    0.825,
+    0.825
+   ],
+   "yield_mean": 0.8417,
+   "violations_total": 2,
+   "consistency": 0.9079
+  },
+  "noise_only": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": null,
+   "recall_runs": [],
+   "yield_mean": 0.0,
+   "violations_total": 3,
+   "consistency": 1.0
+  },
+  "consolidation_heavy": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.9375,
+   "recall_runs": [
+    0.938,
+    1.0,
+    0.875
+   ],
+   "yield_mean": 0.4688,
+   "violations_total": 6,
+   "consistency": 0.9333
+  },
+  "temporal": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.8177,
+   "recall_runs": [
+    0.828,
+    0.828,
+    0.797
+   ],
+   "yield_mean": 0.8177,
+   "violations_total": 0,
+   "consistency": 0.9779
+  },
+  "no_repeats": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.7292,
+   "recall_runs": [
+    0.729,
+    0.729,
+    0.729
+   ],
+   "yield_mean": 0.9115,
+   "violations_total": 0,
+   "consistency": 1.0
+  },
+  "entity_naming": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.8889,
+   "recall_runs": [
+    0.889,
+    0.889,
+    0.889
+   ],
+   "yield_mean": 0.8889,
+   "violations_total": 0,
+   "consistency": 1.0
+  },
+  "retraction_update": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.875,
+   "recall_runs": [
+    0.875,
+    0.875,
+    0.875
+   ],
+   "yield_mean": 0.875,
+   "violations_total": 0,
+   "consistency": 1.0
+  },
+  "multi_chunk": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.875,
+   "recall_runs": [
+    0.875,
+    0.875,
+    0.875
+   ],
+   "yield_mean": 0.7778,
+   "violations_total": 0,
+   "consistency": 1.0
+  }
+ },
+ "speed_suite": {
+  "short": {
+   "tps_median": 89.61211331020985,
+   "ttft_ms_median": 64.52345848083496
+  },
+  "medium": {
+   "tps_median": 89.644962244204,
+   "ttft_ms_median": 102.82206535339355
+  },
+  "longform": {
+   "tps_median": 198.4415210094355,
+   "ttft_ms_median": 122.80941009521484
+  }
+ },
+ "note": "scores only — raw model outputs not published (privacy: pipeline transcripts)"
+}

@@ -1,0 +1,22 @@
+═══ RULES ═══
+1. Extract 0-5 facts max. Fewer is better.
+2. Each fact MUST be a different topic. Never extract two facts about the same thing.
+3. CONSOLIDATE: if the text mentions the same topic 3 times, output ONE fact covering all of it.
+4. Default to fact_kind=world and fact_type=world for everything.
+5. Use fact_kind=assistant ONLY when the fact is about a deliberate action the speaker took (e.g., deployed a service, wrote a file, sent a message).
+6. Use fact_kind=conversation ONLY for direct quotes or stated preferences.
+7. For why: state why the fact matters long-term, NOT why the speaker said it.
+8. ENTITY NAMES: The AI assistant is "Alice". The user is "Bob". Always use these names, never "assistant", "user", "AI", or "the speaker".
+═══ WHAT TO EXTRACT ═══
+- System state changes (configs, deployments, errors, fixes)
+- Technical decisions and reasons
+- Pitfalls discovered (bugs, quirks, gotchas)
+- User preferences and instructions
+- Project milestones and outcomes
+═══ WHAT TO SKIP ═══
+- Greetings, filler, process chatter
+- TRANSIENT PHYSICAL STATES ("my back hurts", "I'm tired", "I have a headache") — never facts, no matter who reports them
+- DEVICE / AUDIO / SOFTWARE TESTS ("testing the mic", "checking levels", "does it sound ok") — setup verification, not information
+- Observations already captured in prior chunks
+- Debugging steps that led nowhere (only extract the fix)
+- Meta-commentary about the conversation itself

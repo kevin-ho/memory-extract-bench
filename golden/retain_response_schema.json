@@ -1,0 +1,147 @@
+{
+  "$defs": {
+    "ExtractedFact": {
+      "description": "A single extracted fact.",
+      "properties": {
+        "what": {
+          "description": "Core fact - concise but complete (1-2 sentences)",
+          "title": "What",
+          "type": "string"
+        },
+        "when": {
+          "description": "When it happened. 'N/A' if unknown.",
+          "title": "When",
+          "type": "string"
+        },
+        "where": {
+          "description": "Location if relevant. 'N/A' if none.",
+          "title": "Where",
+          "type": "string"
+        },
+        "who": {
+          "description": "People involved with relationships. 'N/A' if general.",
+          "title": "Who",
+          "type": "string"
+        },
+        "why": {
+          "description": "Context/significance if important. 'N/A' if obvious.",
+          "title": "Why",
+          "type": "string"
+        },
+        "fact_kind": {
+          "default": "conversation",
+          "description": "'event' or 'conversation'",
+          "title": "Fact Kind",
+          "type": "string"
+        },
+        "occurred_start": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "ISO timestamp for events",
+          "title": "Occurred Start"
+        },
+        "occurred_end": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "ISO timestamp for event end",
+          "title": "Occurred End"
+        },
+        "fact_type": {
+          "description": "'world' = objective/external facts, including user preferences, rules, corrections, and constraints even when stated during a conversation. 'assistant' = actions, experiences, or observations the assistant/agent actually performed.",
+          "enum": [
+            "world",
+            "assistant"
+          ],
+          "title": "Fact Type",
+          "type": "string"
+        },
+        "entities": {
+          "description": "People, places, concepts - plain strings, e.g. [\"Alice\", \"Kubernetes\"]",
+          "items": {
+            "type": "string"
+          },
+          "title": "Entities",
+          "type": "array"
+        },
+        "causal_relations": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/FactCausalRelation"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Links to previous facts (target_index < this fact's index)",
+          "title": "Causal Relations"
+        }
+      },
+      "required": [
+        "what",
+        "when",
+        "where",
+        "who",
+        "why",
+        "fact_type"
+      ],
+      "title": "ExtractedFact",
+      "type": "object"
+    },
+    "FactCausalRelation": {
+      "description": "Causal relationship from this fact to a PREVIOUS fact (embedded in each fact).\n\nUses index-based references but ONLY allows referencing facts that appear\nBEFORE this fact in the list. This prevents hallucination of invalid indices.",
+      "properties": {
+        "target_index": {
+          "description": "Index of the PREVIOUS fact this relates to (0-based). MUST be less than this fact's position in the list. Example: if this is fact #5, target_index can only be 0, 1, 2, 3, or 4.",
+          "title": "Target Index",
+          "type": "integer"
+        },
+        "relation_type": {
+          "const": "caused_by",
+          "description": "How this fact relates to the target fact: 'caused_by' = this fact was caused by the target fact",
+          "title": "Relation Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target_index",
+        "relation_type"
+      ],
+      "title": "FactCausalRelation",
+      "type": "object"
+    }
+  },
+  "description": "Response containing all extracted facts (causal relations are embedded in each fact).",
+  "properties": {
+    "facts": {
+      "description": "List of extracted factual statements",
+      "items": {
+        "$ref": "#/$defs/ExtractedFact"
+      },
+      "title": "Facts",
+      "type": "array"
+    }
+  },
+  "required": [
+    "facts"
+  ],
+  "title": "FactExtractionResponse",
+  "type": "object"
+}
