@@ -59,7 +59,8 @@ The prompt is **byte-verbatim production**: captured from the live pipeline (sys
 | Model | Composite | Recall | Yield | Discipline | Consistency |
 |---|---|---|---|---|---|
 | Gemma-4-E4B (QAT, Q4_K_XL) | 79.41 | 0.84 | 0.70 | 0.67 | 0.98 |
-| gpt-5.6-sol (reasoning) | **84.97** | **0.90** | 0.68 | **0.88** | 0.97 |
+| gpt-5.6-sol (reasoning) | 84.97 | 0.90 | 0.68 | **0.88** | 0.97 |
+| MiniMax-M3 (thinking) | **85.98** | **0.91** | **0.77** | 0.79 | 0.93 |
 
 Full per-scenario breakdown in [`baselines/`](baselines/). Noise floor is ±0.74 composite points (measured, same model re-run) — deltas under ~1.5 points are noise.
 
