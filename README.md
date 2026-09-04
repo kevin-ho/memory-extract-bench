@@ -35,7 +35,7 @@ Where:
 - **discipline** — schema violations + over-extraction past the scenario cap + banned patterns (unresolved relative dates like "yesterday" in event facts, wrong entity naming)
 - **consistency** — run-to-run credit spread (a flaky model scores worse than a stable one)
 
-Plus: streaming TTFT and tok/s on the real prompt, and an optional speed-suite whose prompts mirror `llama.cpp`'s standard endpoint bench for cross-comparability.
+Plus: streaming TTFT and tok/s on the real prompt, and an optional speed-suite whose prompts mirror a widely-used inference-endpoint bench for cross-comparability.
 
 ## The dataset (v2.1.0)
 
@@ -56,7 +56,12 @@ The prompt is **byte-verbatim production**: captured from the live pipeline (sys
 
 ## Key findings so far
 
-Measured on Gemma-4-E4B (QAT, Q4_K_XL, GTX 1080) vs `gpt-5.6-sol` (~2T, reasoning, via OpenAI-compatible gateway):
+| Model | Composite | Recall | Yield | Discipline | Consistency |
+|---|---|---|---|---|---|
+| Gemma-4-E4B (QAT, Q4_K_XL) | 79.41 | 0.84 | 0.70 | 0.67 | 0.98 |
+| gpt-5.6-sol (reasoning) | **84.97** | **0.90** | 0.68 | **0.88** | 0.97 |
+
+Full per-scenario breakdown in [`baselines/`](baselines/). Noise floor is ±0.74 composite points (measured, same model re-run) — deltas under ~1.5 points are noise.
 
 1. **The noise floor is real: ±0.74 composite points.** Same model, same params, one hour apart. Any challenger must win by >1.5 points or rerun at n=5. Benchmarks without a measured noise floor are vibes with decimal points.
 2. **Bigger is not better at extraction selectivity.** The frontier model beat the 4B on recall and temporal resolution (+9 composite) — and emitted *twice* the junk facts from pure smalltalk, every run, perfectly reliably.

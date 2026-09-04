@@ -570,7 +570,7 @@ def main():
     ap.add_argument("--thinking-off-kwargs", action="store_true")
     ap.add_argument("--api-key", default=os.environ.get("RETAIN_BENCH_API_KEY")
                     or os.environ.get("OPENAI_API_KEY"),
-                    help="Bearer key for cloud/9router endpoints (or RETAIN_BENCH_API_KEY / OPENAI_API_KEY env)")
+                    help="Bearer key for the endpoint (or RETAIN_BENCH_API_KEY / OPENAI_API_KEY env)")
     ap.add_argument("--base-url", metavar="URL",
                     help="Full base (e.g. https://api.openai.com or https://host:8443/hf) — "
                          "overrides --host/--port; /v1/chat/completions is appended")
