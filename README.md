@@ -100,6 +100,13 @@ Baselines are fingerprinted: model + GGUF sha256, prompt hash, dataset + bench v
 - One summarizer transcript per scenario. Synthetic transcripts are pipeline-shaped but not distributionally real; validate any model swap against your live pipeline before rewiring (we learned this the hard way — see finding 6).
 - Deterministic scoring can't judge *prose quality* of extracted facts, only presence/absence of the graded signals.
 
+The **downstream** half of the pipeline — consolidation (merge/decide)
+and reflect (mental-model rebuild) — has its own head-to-head study:
+see [`docs/consolidate-reflect-head-to-head.md`](docs/consolidate-reflect-head-to-head.md).
+Spoiler: same quality plans from both model families, but a reasoning
+model given a 4K output budget on consolidation returns *zero* JSON
+because it spent 78% of it thinking. Budget accordingly.
+
 ## License
 
 MIT
