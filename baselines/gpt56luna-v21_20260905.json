@@ -1,0 +1,129 @@
+{
+ "fingerprint": {
+  "model": "gpt-5.6-luna",
+  "host": "127.0.0.1:4000",
+  "gguf": null,
+  "temperature": 0.1,
+  "max_tokens": 8192,
+  "runs": 3,
+  "dataset_version": "2.1.0",
+  "bench_version": "2.0.0",
+  "system_prompt_sha256": "4f0977a195f104f19e4d99f9f958ff47fd0a295ecf8df4109328e2ca1b2b3bdd",
+  "schema_sha256": "94f80c9b6d6961a03648bb0e700b28cd76db3fb3a5ae86ee6d81cfd049e30dc1",
+  "response_format": "json_schema (grammar-enforced)",
+  "api_key_used": true,
+  "thinking_off_kwargs": false,
+  "date": "2026-09-05 17:22"
+ },
+ "composite": {
+  "recall": 0.9479,
+  "yield": 0.7167,
+  "discipline": 0.875,
+  "consistency": 0.983,
+  "score": 88.27
+ },
+ "scenarios": {
+  "rich_transcript": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.8917,
+   "recall_runs": [
+    0.925,
+    0.8,
+    0.95
+   ],
+   "yield_mean": 0.8854,
+   "violations_total": 0,
+   "consistency": 0.9099
+  },
+  "noise_only": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": null,
+   "recall_runs": [],
+   "yield_mean": 0.0,
+   "violations_total": 3,
+   "consistency": 1.0
+  },
+  "consolidation_heavy": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.9792,
+   "recall_runs": [
+    1.0,
+    0.938,
+    1.0
+   ],
+   "yield_mean": 0.9792,
+   "violations_total": 0,
+   "consistency": 0.9631
+  },
+  "temporal": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.9688,
+   "recall_runs": [
+    0.979,
+    0.964,
+    0.964
+   ],
+   "yield_mean": 0.9688,
+   "violations_total": 0,
+   "consistency": 0.9908
+  },
+  "no_repeats": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.9417,
+   "recall_runs": [
+    0.942,
+    0.942,
+    0.942
+   ],
+   "yield_mean": 0.9417,
+   "violations_total": 0,
+   "consistency": 1.0
+  },
+  "entity_naming": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 1.0,
+   "recall_runs": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "yield_mean": 0.6667,
+   "violations_total": 0,
+   "consistency": 1.0
+  },
+  "retraction_update": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 1.0,
+   "recall_runs": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "yield_mean": 1.0,
+   "violations_total": 0,
+   "consistency": 1.0
+  },
+  "multi_chunk": {
+   "runs": 3,
+   "json_ok_all": true,
+   "recall_mean": 0.8542,
+   "recall_runs": [
+    0.854,
+    0.854,
+    0.854
+   ],
+   "yield_mean": 0.2917,
+   "violations_total": 0,
+   "consistency": 1.0
+  }
+ },
+ "speed_suite": {},
+ "note": "scores only - raw model outputs not published (privacy: pipeline transcripts)"
+}

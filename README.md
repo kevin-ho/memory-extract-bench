@@ -58,8 +58,10 @@ The prompt is **byte-verbatim production**: captured from the live pipeline (sys
 
 | Model | Composite | Recall | Yield | Discipline | Consistency |
 |---|---|---|---|---|---|
-| MiniMax-M3 (thinking) | **85.98** | **0.91** | **0.77** | 0.79 | 0.93 |
-| gpt-5.6-sol (reasoning) | 84.97 | 0.90 | 0.68 | **0.88** | 0.97 |
+| muse-spark-1.3-contributor | **91.45** | 0.93 | **0.82** | **1.00** | 0.96 |
+| gpt-5.6-luna | 88.27 | **0.95** | 0.72 | 0.88 | **0.98** |
+| MiniMax-M3 (thinking) | 85.98 | 0.91 | 0.77 | 0.79 | 0.93 |
+| gpt-5.6-sol (reasoning) | 84.97 | 0.90 | 0.68 | 0.88 | 0.97 |
 | Gemma-4-E4B (QAT, Q4_K_XL) | 79.41 | 0.84 | 0.70 | 0.67 | 0.98 |
 | Ling-3.0-tiny (Q4_K_M) | 70.89 | 0.78 | 0.62 | 0.50 | 0.89 |
 | K2-Horizon-0.9B (BF16) | 68.89 | 0.77 | 0.60 | 0.46 | 0.86 |
